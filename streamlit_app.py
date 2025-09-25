@@ -15,6 +15,8 @@ def log_timestamp(label: str = "Session started"):
     st.text(f"{label}: {now}")
 
 # === Navigation setup ===
+show_balloons_once = True
+
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
@@ -25,7 +27,6 @@ def go_github_status():
     st.session_state.page = "GitHub Status"
 
 
-show_balloons_once = True
 
 ##================================================================
 ## === Page: Home
