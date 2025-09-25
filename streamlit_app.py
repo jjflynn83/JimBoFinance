@@ -63,8 +63,7 @@ if "timezone_offset" not in st.session_state:
     
 if "home_launch_time" not in st.session_state:
     #stss.home_launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    stss.home_launch_time = datetime.utcnow() 
-    ##+ stss.timezone_offset
+    stss.home_launch_time = datetime.utcnow() + stss.timezone_offset
 my_launch_time = stss.home_launch_time.strftime("%Y-%m-%d %H:%M:%S")
     
     
