@@ -63,8 +63,7 @@ if "timezone_offset" not in st.session_state:
     
 if "home_launch_time" not in st.session_state:
     #stss.home_launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    stss.home_launch_time = datetime.utcnow() + stss.timezone_offset
-my_launch_time = stss.home_launch_time.strftime("%Y-%m-%d %H:%M:%S")
+    stss.home_launch_time = (datetime.utcnow() + stss.timezone_offset ).strftime("%Y-%m-%d %H:%M:%S")
     
     
 ### Start at the home page
@@ -95,7 +94,7 @@ if stss.page == "Home":
       stss.show_balloons_once = False
       #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
       st.balloons()  ## This jumps back to top so do it last
-   st.write(f"App launched at: `{my_launch_time}`")
+   st.write(f"App launched at: `{stss.home_launch_time}`")
    mytime = (datetime.utcnow() + stss.timezone_offset).strftime("%Y-%m-%d %H:%M:%S")
    st.write(f"Page launched at: `{mytime}`")
    st.button("GitHub Status", on_click=go_github_status)
@@ -107,7 +106,7 @@ if stss.page == "Home":
 ##================================================================
 elif st.session_state.page == "GitHub Status":
     st.title("💰 JimBo's GitHub Status 💰")
-    st.write(f"App launched at: `{my_launch_time}`")
+    st.write(f"App launched at: `{stss.home_launch_time}`")
     mytime = (datetime.utcnow() + stss.timezone_offset).strftime("%Y-%m-%d %H:%M:%S")
     st.write(f"Page launched at: `{mytime}`")
 
