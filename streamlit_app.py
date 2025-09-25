@@ -24,13 +24,22 @@ def go_home():
 def go_github_status():
     st.session_state.page = "GitHub Status"
 
-# === Page: Home =================================================
+
+show_ballons_once = True
+
+##================================================================
+## === Page: Home
+##================================================================
 if st.session_state.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
-   st.balloons()
+   show_ballons_once = show_ballons_once and not st.balloons()
    log_timestamp("App launched")
    st.button("GitHub Status", on_click=go_github_status())
-   
+
+
+##================================================================
+## === Page: GitHub Status
+##================================================================
 elif st.session_state.page == "GitHub Status":
     st.title("💰 JimBo's GitHub Status 💰")
     log_timestamp("App launched")
