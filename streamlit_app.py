@@ -33,6 +33,7 @@ show_ballons_once = True
 if st.session_state.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
    show_ballons_once = show_ballons_once and not st.balloons()
+   st.write(f"show_ballons_once = `{show_ballons_once}`")
    log_timestamp("App launched")
    st.button("GitHub Status", on_click=go_github_status())
 
