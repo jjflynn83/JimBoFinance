@@ -17,6 +17,10 @@ def log_timestamp(label: str = "Session started"):
 # === Navigation setup ===
 if "show_balloons_once" not in st.session_state:
     st.session_state.show_balloons_once = True
+    
+if "home_launch_time" not in st.session_state:
+    st.session_state.home_launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
@@ -29,28 +33,32 @@ def go_github_status():
 
 
 
+
 ##================================================================
-## === Page: Home
+##=== Page: Home
 ##================================================================
 if st.session_state.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
    if st.session_state.show_balloons_once:
-      st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
+      #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
       st.session_state.show_balloons_once = False
-      st.balloons()
-      st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
-   log_timestamp("App launched")
+      #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
+      st.balloons()  ## This jumps back to top so do it last
+   st.write(f"App launched at: `{st.session.home_launch_time}`")
+   launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+   st.write(f"page launched at: `{launch_time}`")
    st.button("GitHub Status", on_click=go_github_status)
 
 
+
 ##================================================================
-## === Page: GitHub Status
+##== Page: GitHub Status
 ##================================================================
 elif st.session_state.page == "GitHub Status":
     st.title("💰 JimBo's GitHub Status 💰")
-    log_timestamp("App launched")
+    st.write(f"App launched at: `{st.session.home_launch_time}`")
     launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.write(f"App launched at: `{launch_time}`")
+    st.write(f"page launched at: `{launch_time}`")
 
     # Git status
     try:
