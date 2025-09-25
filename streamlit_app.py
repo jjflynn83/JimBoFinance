@@ -92,11 +92,10 @@ def go_github_status():
 if stss.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
    if stss.show_balloons_once:
-      #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
       stss.show_balloons_once = False
-      #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
       st.balloons()  ## This jumps back to top so do it last
    st.write(f"App launched at: `{stss.home_launch_time}`")
+   st.write(f"timezone offset: {stss.timezone_offset}")
    mytime = ( datetime.utcnow() \
             + timedelta(hours=stss.timezone_offset) \
             ).strftime("%Y-%m-%d %H:%M:%S")
