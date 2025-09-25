@@ -32,6 +32,7 @@ show_ballons_once = True
 ##================================================================
 if st.session_state.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
+   st.write(f"show_ballons_once = `{show_ballons_once}`")
    show_ballons_once = show_ballons_once and not st.balloons()
    st.write(f"show_ballons_once = `{show_ballons_once}`")
    log_timestamp("App launched")
