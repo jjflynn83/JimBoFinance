@@ -4,6 +4,7 @@ from datetime import datetime
 
 def animated_title(text: str, emoji: str = "🎈"):
     st.title(f"{text} {emoji}")
+    st.balloon()
 
 def git_status():
     try:
