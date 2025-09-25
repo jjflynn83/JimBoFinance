@@ -33,7 +33,8 @@ def get_user_timezone_offset() -> float:
     """, height=0)
 
     # Hidden input to receive offset
-    raw_offset = st.text_input("user_offset", value="0", type="hidden")
+    with st.expander("Debug: Timezone Offset", expanded=False):
+        raw_offset = st.text_input("Offset", value="0")
 
     # Try to parse and return
     try:
