@@ -56,7 +56,7 @@ if "show_balloons_once" not in st.session_state:
     stss.show_balloons_once = True
 
 
-if "timezone_offset" not in st.sessions_state:
+if "timezone_offset" not in st.session_state:
    stss.timezone_offset = get_user_timezone_offset()
    
     
