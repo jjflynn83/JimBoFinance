@@ -2,10 +2,6 @@ import streamlit as st
 import subprocess
 from datetime import datetime
 
-def animated_ballons_title(text: str):
-    st.title(f"{text}")
-    st.balloons()
-
 def git_status():
     try:
         result = subprocess.run(["git", "status"], capture_output=True, text=True)
@@ -26,7 +22,7 @@ git_status()
 
 
 '''
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
+#st.write(
+#    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+#)
 '''
