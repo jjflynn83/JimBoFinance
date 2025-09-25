@@ -44,7 +44,7 @@ if st.session_state.page == "Home":
       st.session_state.show_balloons_once = False
       #st.write(f"show_balloons_once = `{st.session_state.show_balloons_once}`")
       st.balloons()  ## This jumps back to top so do it last
-   st.write(f"App launched at: `{st.session.home_launch_time}`")
+   st.write(f"App launched at: `{st.session_state.home_launch_time}`")
    launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
    st.write(f"page launched at: `{launch_time}`")
    st.button("GitHub Status", on_click=go_github_status)
@@ -56,7 +56,7 @@ if st.session_state.page == "Home":
 ##================================================================
 elif st.session_state.page == "GitHub Status":
     st.title("💰 JimBo's GitHub Status 💰")
-    st.write(f"App launched at: `{st.session.home_launch_time}`")
+    st.write(f"App launched at: `{st.session_state.home_launch_time}`")
     launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.write(f"page launched at: `{launch_time}`")
 
