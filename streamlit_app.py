@@ -16,11 +16,7 @@ def git_status():
 
 
 
-def get_user_timezone_offset() -> float:
-    """Returns user's browser timezone offset in hours 
-    (e.g., -5.0 for CDT). Defaults to 0.0 if unavailable."""
-    
-    # Inject JavaScript to capture offset and submit it
+def get_user_timezone_offset() -> str:
     components.html("""
         <script>
             const offsetMinutes = new Date().getTimezoneOffset();
@@ -32,15 +28,9 @@ def get_user_timezone_offset() -> float:
         </script>
     """, height=0)
 
-    # Hidden input to receive offset
     with st.expander("Debug: Timezone Offset", expanded=False):
-        raw_offset = st.text_input("Offset", value="0")
+        return st.text_input("user_offset", value="0")
 
-    # Try to parse and return
-    try:
-        return float(raw_offset)
-    except:
-        return 0.0
 
 
 
@@ -58,7 +48,12 @@ if "show_balloons_once" not in st.session_state:
 
 
 if "timezone_offset" not in st.session_state:
-   stss.timezone_offset = get_user_timezone_offset()
+   raw_offset = get_user_timezone_offset()
+   try:
+       offset = float(raw_offset)
+       stss.timezone_offset = offset
+   except:
+       stss.timezone_offset = 0.0
    
     
 if "home_launch_time" not in st.session_state:
