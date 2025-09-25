@@ -2,8 +2,8 @@ import streamlit as st
 import subprocess
 from datetime import datetime
 
-def animated_title(text: str, emoji: str = "🎈"):
-    st.title(f"{text} {emoji}")
+def animated_ballons_title(text: str):
+    st.title(f"{text}")
     st.balloons()
 
 def git_status():
@@ -18,8 +18,9 @@ def log_timestamp(label: str = "Session started"):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.text(f"{label}: {now}")
 
-# === Use the functions ===
-animated_title("💰 JimBo's Finance Fun 🚀")
+# === Main User Page ===
+st.title("💰 JimBo's Finance Fun 💰")
+st.balloons()
 log_timestamp("App launched")
 git_status()
 
