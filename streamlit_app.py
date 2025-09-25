@@ -47,14 +47,19 @@ if "show_balloons_once" not in st.session_state:
     stss.show_balloons_once = True
 
 
-if "timezone_offset" not in st.session_state:
-   raw_offset = get_user_timezone_offset()
-   try:
-       offset = float(raw_offset)
-       st.write(f"raw_offset: {raw_offset}")
-       stss.timezone_offset = offset
-   except:
-       stss.timezone_offset = 0.0
+raw_offset = get_user_timezone_offset()
+
+try:
+    offset = float(raw_offset)
+    st.write(f"📍 raw_offset: `{offset}`")
+
+    # Only store if offset is non-zero and hasn't been stored yet
+    if offset != 0.0 and "timezone_offset" not in st.session_state:
+        st.session_state.timezone_offset = offset
+        st.write(f"✅ Stored timezone_offset: `{offset}`")
+except:
+    st.warning("⚠️ Could not parse timezone offset.")
+
    
     
 if "home_launch_time" not in st.session_state:
