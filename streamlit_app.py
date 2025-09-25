@@ -25,20 +25,19 @@ def go_github_status():
     st.session_state.page = "GitHub Status"
 
 
-show_ballons_once = True
+show_balloons_once = True
 
 ##================================================================
 ## === Page: Home
 ##================================================================
 if st.session_state.page == "Home":
    st.title("💰 JimBo's Finance Fun 💰")
-   st.write(f"show_ballons_once = `{show_ballons_once}`")
-   if show_ballons_once:
-      st.ballons()
-      show_ballons_once = False
-      
-   show_ballons_once = show_ballons_once and not st.balloons()
-   st.write(f"show_ballons_once = `{show_ballons_once}`")
+   st.write(f"show_balloons_once = `{show_balloons_once}`")
+   if show_balloons_once:
+      st.balloons()
+      show_balloons_once = False
+   #show_ballons_once = show_balloons_once and not st.balloons()
+   st.write(f"show_balloons_once = `{show_balloons_once}`")
    log_timestamp("App launched")
    st.button("GitHub Status", on_click=go_github_status())
 
