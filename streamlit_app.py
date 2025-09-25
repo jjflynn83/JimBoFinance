@@ -51,6 +51,7 @@ if "timezone_offset" not in st.session_state:
    raw_offset = get_user_timezone_offset()
    try:
        offset = float(raw_offset)
+       st.write(f"raw_offset: {raw_offset}")
        stss.timezone_offset = offset
    except:
        stss.timezone_offset = 0.0
