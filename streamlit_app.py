@@ -57,6 +57,8 @@ try:
     if offset != 0.0 and "timezone_offset" not in st.session_state:
         st.session_state.timezone_offset = offset
         st.write(f"✅ Stored timezone_offset: `{offset}`")
+    else:
+        stss.timezone_offset = 0.0
 except:
     st.warning("⚠️ Could not parse timezone offset.")
     stss.timezone_offset = 0.0
