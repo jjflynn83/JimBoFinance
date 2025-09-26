@@ -19,7 +19,8 @@ def capture_browser_timezone(session_key="browser_tz", offset_key="timezone_offs
         }
     </script>
     """, height=0)
-
+    st.write(f"tz: `{tz}`")
+    st.write(f"zoneinfo: `{zoneinfo.ZoneInfo(tz)}`")
     # Compute offset and return it
     if tz:
         try:
