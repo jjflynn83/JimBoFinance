@@ -16,25 +16,24 @@ def git_status():
 
 
 def get_browser_time():
+    # Inject JS to set browser time in hidden input
     components.html("""
         <script>
             const now = new Date();
             const isoTime = now.toISOString();
             const input = window.parent.document.querySelector('input[name="browser_time"]');
-            if (input) input.value = isoTime;
-            const form = window.parent.document.querySelector('form');
-            if (form) form.dispatchEvent(new Event('submit', { bubbles: true }));
+            if (input) {
+                input.value = isoTime;
+                const form = window.parent.document.querySelector('form');
+                if (form) {
+                    form.dispatchEvent(new Event('submit', { bubbles: true }));
+                }
+            }
         </script>
     """, height=0)
 
+    # Hidden input field to receive browser time
     return st.text_input("browser_time", value="", label_visibility="collapsed")
-
-raw_time = get_browser_time()
-
-if raw_time:
-    st.write(f"🕒 Browser time: `{raw_time}`")
-else:
-    st.write("⏳ Waiting for browser time...")
 
 
 st.session_state.timezone_offset = 0.0
