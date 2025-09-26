@@ -15,21 +15,29 @@ def git_status():
         st.error(f"Git status failed: {e}")
 
 
-def get_browser_time():
-    return components.html("""
-        <script>
-            const now = new Date();
-            const isoTime = now.toISOString();
-            window.parent.postMessage({type: 'streamlit:setComponentValue', value: isoTime}, '*');
-        </script>
-    """, height=0)
+# Inject JavaScript to set browser time into a visible input
+components.html("""
+    <script>
+        const now = new Date();
+        const isoTime = now.toISOString();
+        const input = window.parent.document.querySelector('input[name="browser_time"]');
+        if (input && input.value === "") {
+            input.value = isoTime;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    </script>
+""", height=0)
 
-browser_time = get_browser_time()
+# Visible input field to receive browser time
+raw_time = st.text_input("Browser time", key="browser_time", value="")
 
-if browser_time:
-    st.write(f"🕒 Browser time: `{browser_time}`")
+# Display result
+if raw_time:
+    st.write(f"🕒 Browser time: `{raw_time}`")
 else:
     st.info("⏳ Waiting for browser time...")
+
+
 
 
 st.session_state.timezone_offset = 0.0
