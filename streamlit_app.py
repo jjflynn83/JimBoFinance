@@ -24,6 +24,12 @@ def get_browser_time():
         </script>
     """, height=0)
 
+browser_time = get_browser_time()
+
+if browser_time:
+    st.write(f"🕒 Browser time: `{browser_time}`")
+else:
+    st.info("⏳ Waiting for browser time...")
 
 
 st.session_state.timezone_offset = 0.0
