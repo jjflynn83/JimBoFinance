@@ -3,7 +3,14 @@ import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
 import zoneinfo
-from timezone_listener import get_browser_timezone
+##from timezone_listener import get_browser_timezone
+
+_timezone_component = components.declare_component("timezone_listener", path="components/timezone")
+
+def get_browser_timezone():
+    return _timezone_component()
+
+
 
 timezone = get_browser_timezone()
 
