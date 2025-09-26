@@ -6,17 +6,6 @@ import streamlit.components.v1 as components
 
 
 
-def git_status():
-    ''' Retuns status of the GitHub library'''
-    try:
-        result = subprocess.run(["git", "status"], capture_output=True, text=True)
-        st.subheader("🔍 Git Status")
-        st.code(result.stdout)
-    except Exception as e:
-        st.error(f"Git status failed: {e}")
-
-
-
 #timezone = st_javascript("""await (async () => {
 #            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 #            console.log(userTimezone)
@@ -25,9 +14,48 @@ def git_status():
 #
 # st.write(f"timezone: {timezone}")
 
+timezone_placeholder = st.empty()
+
+# Inject JavaScript to get browser timezone and send it back
+components.html("""
+<script>
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const streamlitDoc = window.parent.document;
+    const streamlitInput = streamlitDoc.querySelector('div[data-testid="stTextInput"] input');
+    if (streamlitInput) {
+        streamlitInput.value = tz;
+        streamlitInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+</script>
+""", height=0)
+
+# Hidden text input to receive timezone from JS
+timezone = st.text_input("Browser Timezone", label_visibility="collapsed")
+
+# Display result
+if timezone:
+    st.success(f"🕒 Detected Timezone: `{timezone}`")
+else:
+    st.info("Waiting for browser timezone…")
+
+
+
 
 st.session_state.timezone_offset = 0.0
 
+
+
+##=================================================================
+## Function to show GitHub Status
+##=================================================================
+def git_status():
+    ''' Retuns status of the GitHub library'''
+    try:
+        result = subprocess.run(["git", "status"], capture_output=True, text=True)
+        st.subheader("🔍 Git Status")
+        st.code(result.stdout)
+    except Exception as e:
+        st.error(f"Git status failed: {e}")
 
 
 ##================================================================
