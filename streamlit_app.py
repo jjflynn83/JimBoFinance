@@ -3,6 +3,7 @@ import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
 #from streamlit_javascript import st_javascript
+import zoneinfo
 
 
 
@@ -14,27 +15,30 @@ import streamlit.components.v1 as components
 #
 # st.write(f"timezone: {timezone}")
 
-timezone_placeholder = st.empty()
+timezone = st.text_input("Browser Timezone", label_visibility="collapsed")
 
-# Inject JavaScript to get browser timezone and send it back
+# Inject JavaScript to populate the hidden input
 components.html("""
 <script>
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const streamlitDoc = window.parent.document;
-    const streamlitInput = streamlitDoc.querySelector('div[data-testid="stTextInput"] input');
-    if (streamlitInput) {
-        streamlitInput.value = tz;
-        streamlitInput.dispatchEvent(new Event('input', { bubbles: true }));
+    const input = window.parent.document.querySelector('input[type="text"]');
+    if (input) {
+        input.value = tz;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
     }
 </script>
 """, height=0)
 
-# Hidden text input to receive timezone from JS
-timezone = st.text_input("Browser Timezone", label_visibility="collapsed")
-
-# Display result
+# Show result
 if timezone:
     st.success(f"🕒 Detected Timezone: `{timezone}`")
+    try:
+        tzinfo = zoneinfo.ZoneInfo(timezone)
+        offset = datetime.now(tzinfo).utcoffset().total_seconds() / 3600
+        st.write(f"UTC Offset: `{offset:+.1f} hours`")
+        st.session_state.timezone_offset = offset
+    except Exception as e:
+        st.error(f"Failed to compute offset: {e}")
 else:
     st.info("Waiting for browser timezone…")
 
