@@ -37,7 +37,7 @@ else:
     st.write("⏳ Waiting for browser time...")
 
 
-st.sesstion_state.timezone_offset = 0.0
+st.session_state.timezone_offset = 0.0
 
 
 
