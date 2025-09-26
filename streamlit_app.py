@@ -16,7 +16,7 @@ def git_status():
 
 
 
-def get_user_timezone_offset() -> str:
+def get_user_timezone_offset_0() -> str:
     components.html("""
         <script>
             const offsetMinutes = new Date().getTimezoneOffset();
@@ -32,8 +32,25 @@ def get_user_timezone_offset() -> str:
         return st.text_input("user_offset", value="0")
 
 
+def get_user_timezone_offset_1():
+    component = components.html("""
+        <script>
+            const offsetMinutes = new Date().getTimezoneOffset();
+            const offsetHours = -offsetMinutes / 60;
+            window.parent.postMessage({type: 'streamlit:setComponentValue', value: offsetHours}, '*');
+        </script>
+    """, height=0)
+    return component
 
 
+offset = get_user_timezone_offset_1()
+if offset is not None:
+    st.write(f"📍 raw_offset: `{offset}`")
+    if offset != 0.0 and "timezone_offset" not in st.session_state:
+        st.session_state.timezone_offset = offset
+        st.write(f"✅ Stored timezone_offset: `{offset}`")
+else:
+    st.warning("⚠️ Could not retrieve timezone offset.")
 
 
 
@@ -47,23 +64,7 @@ if "show_balloons_once" not in st.session_state:
     stss.show_balloons_once = True
 
 
-raw_offset = get_user_timezone_offset()
-
-try:
-    offset = float(raw_offset)
-    st.write(f"📍 raw_offset: `{offset}`")
-
-    # Only store if offset is non-zero and hasn't been stored yet
-    if offset != 0.0 and "timezone_offset" not in st.session_state:
-        st.session_state.timezone_offset = offset
-        st.write(f"✅ Stored timezone_offset: `{offset}`")
-    else:
-        stss.timezone_offset = 0.0
-except:
-    st.warning("⚠️ Could not parse timezone offset.")
-    stss.timezone_offset = 0.0
-
-   
+  
     
 if "home_launch_time" not in st.session_state:
     #stss.home_launch_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
