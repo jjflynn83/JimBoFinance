@@ -3,6 +3,8 @@ import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
 import zoneinfo
+from capture_timezone import capture_browser_timezone
+
 
 
 
@@ -14,39 +16,7 @@ import zoneinfo
 #
 # st.write(f"timezone: {timezone}")
 
-
-
-# Create a uniquely identifiable input
-timezone = st.text_input("Detected Timezone", key="browser_tz", label_visibility="collapsed")
-
-# Inject JavaScript to populate the input
-components.html("""
-<script>
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const inputs = window.parent.document.querySelectorAll('input');
-    for (const input of inputs) {
-        if (input.value === "") {
-            input.value = tz;
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-            break;
-        }
-    }
-</script>
-""", height=0)
-
-# Display result
-if timezone:
-    st.success(f"🕒 Detected Timezone: `{timezone}`")
-    try:
-        tzinfo = zoneinfo.ZoneInfo(timezone)
-        offset = datetime.now(tzinfo).utcoffset().total_seconds() / 3600
-        st.write(f"UTC Offset: `{offset:+.1f} hours`")
-        st.session_state.timezone_offset = offset
-    except Exception as e:
-        st.error(f"Failed to compute offset: {e}")
-else:
-    st.info("Waiting for browser timezone…")
-
+capture_browser_timezone()
 
 
 st.session_state.timezone_offset = 0.0
