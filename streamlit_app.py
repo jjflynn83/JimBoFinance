@@ -16,22 +16,25 @@ import zoneinfo
 
 
 
-# Hidden input to receive timezone from JS
-timezone = st.text_input("Browser Timezone", label_visibility="collapsed")
+# Create a uniquely identifiable input
+timezone = st.text_input("Detected Timezone", key="browser_tz", label_visibility="collapsed")
 
-# Inject JavaScript to populate the hidden input
+# Inject JavaScript to populate the input
 components.html("""
 <script>
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const input = window.parent.document.querySelector('input[type="text"]');
-    if (input) {
-        input.value = tz;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
+    const inputs = window.parent.document.querySelectorAll('input');
+    for (const input of inputs) {
+        if (input.value === "") {
+            input.value = tz;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            break;
+        }
     }
 </script>
 """, height=0)
 
-# Show result
+# Display result
 if timezone:
     st.success(f"🕒 Detected Timezone: `{timezone}`")
     try:
