@@ -17,12 +17,13 @@ def git_status():
 
 
 
-timezone = st_javascript("""await (async () => {
-            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            console.log(userTimezone)
-            return userTimezone
-})().then(returnValue => returnValue)""")
-
+#timezone = st_javascript("""await (async () => {
+#            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+#            console.log(userTimezone)
+#            return userTimezone
+#})().then(returnValue => returnValue)""")
+#
+# st.write(f"timezone: {timezone}")
 
 
 st.session_state.timezone_offset = 0.0
