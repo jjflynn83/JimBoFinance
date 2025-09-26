@@ -2,6 +2,8 @@ import streamlit as st
 import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
+from streamlit_javascript import st_javascript
+
 
 
 
@@ -36,7 +38,11 @@ if timezone:
 else:
     st.info("⏳ Waiting for browser timezone...")
 
-
+timezone = st_javascript("""await (async () => {
+            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            console.log(userTimezone)
+            return userTimezone
+})().then(returnValue => returnValue)""")
 
 
 
