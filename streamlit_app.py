@@ -3,46 +3,26 @@ import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
 import zoneinfo
+from timezone_listener import get_browser_timezone
 
-def capture_browser_timezone(session_key="browser_tz", offset_key="timezone_offset"):
-    # Create a visible input field for JS injection
-    tz = st.text_input("Browser Timezone", key=session_key, label_visibility="collapsed")
+timezone = get_browser_timezone()
 
-    # Inject JavaScript to populate the input
-    components.html("""
-    <script>
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const input = window.parent.document.querySelector('input[data-testid="stTextInput"]');
-        if (input && input.value === "") {
-            input.value = tz;
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-    </script>
-    """, height=0)
-    st.write(f"tz: `{tz}`")
-    st.write(f"zoneinfo: `{zoneinfo.ZoneInfo(tz)}`")
-    # Compute offset and return it
-    if tz:
-        try:
-            tzinfo = zoneinfo.ZoneInfo(tz)
-            offset = datetime.now(tzinfo).utcoffset().total_seconds() / 3600
-            st.session_state[offset_key] = offset
-            return offset
-        except Exception as e:
-            st.session_state[offset_key] = 0.0
-            return 0.0
-    else:
-        st.session_state[offset_key] = 0.0
-        return 0.0
-    
-offset = capture_browser_timezone()
-
-st.write(f"🧭 UTC Offset: `{offset:+.1f} hours`")
+if timezone:
+    st.success(f"Detected Timezone: `{timezone}`")
+    try:
+        tzinfo = zoneinfo.ZoneInfo(timezone)
+        offset = datetime.now(tzinfo).utcoffset().total_seconds() / 3600
+        st.write(f"UTC Offset: `{offset:+.1f} hours`")
+        st.session_state["timezone_offset"] = offset
+    except Exception as e:
+        st.error(f"Failed to compute offset: {e}")
+else:
+    st.info("Waiting for browser timezone…")
 
 
 
 
-st.session_state.timezone_offset = offset
+st.session_state.timezone_offset = -5
 
 
 
