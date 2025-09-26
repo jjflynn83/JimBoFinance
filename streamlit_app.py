@@ -59,6 +59,7 @@ try:
         st.write(f"✅ Stored timezone_offset: `{offset}`")
 except:
     st.warning("⚠️ Could not parse timezone offset.")
+    stss.timezone_offset = 0.0
 
    
     
