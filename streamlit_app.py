@@ -16,26 +16,14 @@ def git_status():
 
 
 def get_browser_time():
-    components.html("""
+    return components.html("""
         <script>
             const now = new Date();
             const isoTime = now.toISOString();
-            const input = window.parent.document.querySelector('input[name="browser_time"]');
-            if (input && input.value === "") {
-                input.value = isoTime;
-            }
+            window.parent.postMessage({type: 'streamlit:setComponentValue', value: isoTime}, '*');
         </script>
     """, height=0)
 
-    return st.text_input("Browser time (auto-filled)", key="browser_time", value="")
-
-
-raw_time = get_browser_time()
-
-if raw_time:
-    st.write(f"🕒 Browser time: `{raw_time}`")
-else:
-    st.write("⏳ Waiting for browser time...")
 
 
 st.session_state.timezone_offset = 0.0
