@@ -35,6 +35,13 @@ def get_browser_time():
     # Hidden input field to receive browser time
     return st.text_input("browser_time", value="", label_visibility="collapsed")
 
+raw_time = get_browser_time()
+
+if raw_time:
+    st.write(f"🕒 Browser time: `{raw_time}`")
+else:
+    st.write("⏳ Waiting for browser time...")
+
 
 st.session_state.timezone_offset = 0.0
 
