@@ -1,7 +1,7 @@
 import streamlit as st
 import subprocess
 from datetime import datetime, timedelta
-import streamlit.components.v1 as components
+#import streamlit.components.v1 as components
 from streamlit_javascript import st_javascript
 
 
@@ -17,26 +17,6 @@ def git_status():
         st.error(f"Git status failed: {e}")
 
 
-def get_browser_timezone():
-    components.html("""
-        <script>
-            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const input = window.parent.document.querySelector('input[name="user_timezone"]');
-            if (input && input.value === "") {
-                input.value = tz;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-        </script>
-    """, height=0)
-
-    return st.text_input("Your Timezone", key="user_timezone", value="")
-
-timezone = get_browser_timezone()
-
-if timezone:
-    st.write(f"🌍 Detected timezone: `{timezone}`")
-else:
-    st.info("⏳ Waiting for browser timezone...")
 
 timezone = st_javascript("""await (async () => {
             const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
