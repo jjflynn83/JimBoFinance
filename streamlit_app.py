@@ -2,7 +2,6 @@ import streamlit as st
 import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
-import streamlit_js_eval
 
 
 
@@ -16,13 +15,27 @@ def git_status():
         st.error(f"Git status failed: {e}")
 
 
+def get_browser_time():
+    components.html("""
+        <script>
+            const now = new Date();
+            const isoTime = now.toISOString();
+            const input = window.parent.document.querySelector('input[name="browser_time"]');
+            if (input) input.value = isoTime;
+            const form = window.parent.document.querySelector('form');
+            if (form) form.dispatchEvent(new Event('submit', { bubbles: true }));
+        </script>
+    """, height=0)
 
-offset_minutes = streamlit_js_eval(js_expressions="new Date().getTimezoneOffset()", key="offset")
-if offset_minutes is not None:
-    offset_hours = -offset_minutes / 60
-    st.write(f"🌍 Timezone offset: `{offset_hours}` hours")
+    return st.text_input("browser_time", value="", label_visibility="collapsed")
+
+raw_time = get_browser_time()
+
+if raw_time:
+    st.write(f"🕒 Browser time: `{raw_time}`")
 else:
-    st.write("⏳ Waiting for timezone offset...")
+    st.write("⏳ Waiting for browser time...")
+
 
 st.sesstion_state.timezone_offset = 0.0
 
