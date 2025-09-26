@@ -15,6 +15,9 @@ import zoneinfo
 #
 # st.write(f"timezone: {timezone}")
 
+
+
+# Hidden input to receive timezone from JS
 timezone = st.text_input("Browser Timezone", label_visibility="collapsed")
 
 # Inject JavaScript to populate the hidden input
@@ -41,7 +44,6 @@ if timezone:
         st.error(f"Failed to compute offset: {e}")
 else:
     st.info("Waiting for browser timezone…")
-
 
 
 
