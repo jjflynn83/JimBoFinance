@@ -15,27 +15,27 @@ def git_status():
         st.error(f"Git status failed: {e}")
 
 
-# Inject JavaScript to set browser time into a visible input
-components.html("""
-    <script>
-        const now = new Date();
-        const isoTime = now.toISOString();
-        const input = window.parent.document.querySelector('input[name="browser_time"]');
-        if (input && input.value === "") {
-            input.value = isoTime;
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-    </script>
-""", height=0)
+def get_browser_timezone():
+    components.html("""
+        <script>
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const input = window.parent.document.querySelector('input[name="user_timezone"]');
+            if (input && input.value === "") {
+                input.value = tz;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        </script>
+    """, height=0)
 
-# Visible input field to receive browser time
-raw_time = st.text_input("Browser time", key="browser_time", value="")
+    return st.text_input("Your Timezone", key="user_timezone", value="")
 
-# Display result
-if raw_time:
-    st.write(f"🕒 Browser time: `{raw_time}`")
+timezone = get_browser_timezone()
+
+if timezone:
+    st.write(f"🌍 Detected timezone: `{timezone}`")
 else:
-    st.info("⏳ Waiting for browser time...")
+    st.info("⏳ Waiting for browser timezone...")
+
 
 
 
