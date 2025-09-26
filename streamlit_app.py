@@ -3,24 +3,19 @@ import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
 import zoneinfo
+from timezone_listener import get_browser_timezone
 
-# Create a placeholder to receive the timezone
-timezone = st.empty()
+timezone = get_browser_timezone()
 
-# JavaScript block that sends timezone to Streamlit
-components.html("""
-<script>
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    window.parent.postMessage({type: 'timezone', value: tz}, '*');
-</script>
-""", height=0)
-
-# Listen for the message
-message = st.experimental_get_query_params().get("timezone", [None])[0]
-
-# Display result
-if message:
-    st.success(f"🕒 Detected Timezone: `{message}`")
+if timezone:
+    st.success(f"🕒 Timezone: `{timezone}`")
+    try:
+        tzinfo = zoneinfo.ZoneInfo(timezone)
+        offset = datetime.now(tzinfo).utcoffset().total_seconds() / 3600
+        st.write(f"UTC Offset: `{offset:+.1f} hours`")
+        st.session_state.timezone_offset = offset
+    except Exception as e:
+        st.error(f"Failed to compute offset: {e}")
 else:
     st.info("Waiting for browser timezone…")
 
