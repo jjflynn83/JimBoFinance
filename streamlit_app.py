@@ -2,6 +2,7 @@ import streamlit as st
 import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
+from streamlit_js_eval import streamlit_js_eval
 
 
 
@@ -16,50 +17,15 @@ def git_status():
 
 
 
-def get_user_timezone_offset_0() -> str:
-    components.html("""
-        <script>
-            const offsetMinutes = new Date().getTimezoneOffset();
-            const offsetHours = -offsetMinutes / 60;
-            const input = window.parent.document.querySelector('input[name="user_offset"]');
-            if (input) input.value = offsetHours;
-            const form = window.parent.document.querySelector('form');
-            if (form) form.dispatchEvent(new Event('submit', { bubbles: true }));
-        </script>
-    """, height=0)
-
-    with st.expander("Debug: Timezone Offset", expanded=False):
-        return st.text_input("user_offset", value="0")
-
-
-def get_user_timezone_offset_1():
-    component = components.html("""
-        <script>
-            const offsetMinutes = new Date().getTimezoneOffset();
-            const offsetHours = -offsetMinutes / 60;
-            window.parent.postMessage({type: 'streamlit:setComponentValue', value: offsetHours}, '*');
-        </script>
-    """, height=0)
-    return component
-
-
-
-
-def get_browser_time():
-    return components.html("""
-        <script>
-        const now = new Date();
-        const localTime = now.toISOString();  // or use now.toLocaleString() for formatted
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: localTime}, '*');
-        </script>
-    """, height=0)
-
-browser_time = get_browser_time()
-
-if browser_time:
-    st.write(f"🕒 Browser time: `{browser_time}`")
+offset_minutes = streamlit_js_eval(js_expressions="new Date().getTimezoneOffset()", key="offset")
+if offset_minutes is not None:
+    offset_hours = -offset_minutes / 60
+    st.write(f"🌍 Timezone offset: `{offset_hours}` hours")
 else:
-    st.warning("⚠️ Waiting for browser time...")
+    st.write("⏳ Waiting for timezone offset...")
+
+st.sesstion_state.timezone_offset = 0.0
+
 
 
 ##================================================================
