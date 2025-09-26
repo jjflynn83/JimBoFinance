@@ -43,16 +43,23 @@ def get_user_timezone_offset_1():
     return component
 
 
-offset = get_user_timezone_offset_1()
-if offset is not None:
-    st.write(f"📍 raw_offset: `{offset}`")
-    if offset != 0.0 and "timezone_offset" not in st.session_state:
-        st.session_state.timezone_offset = offset
-        st.write(f"✅ Stored timezone_offset: `{offset}`")
+
+
+def get_browser_time():
+    return components.html("""
+        <script>
+        const now = new Date();
+        const localTime = now.toISOString();  // or use now.toLocaleString() for formatted
+        window.parent.postMessage({type: 'streamlit:setComponentValue', value: localTime}, '*');
+        </script>
+    """, height=0)
+
+browser_time = get_browser_time()
+
+if browser_time:
+    st.write(f"🕒 Browser time: `{browser_time}`")
 else:
-    st.warning("⚠️ Could not retrieve timezone offset.")
-
-
+    st.warning("⚠️ Waiting for browser time...")
 
 
 ##================================================================
