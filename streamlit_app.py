@@ -2,7 +2,6 @@ import streamlit as st
 import subprocess
 from datetime import datetime, timedelta
 import streamlit.components.v1 as components
-#from streamlit_javascript import st_javascript
 import zoneinfo
 
 
